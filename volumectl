@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+VOLUME_CONTROLLER="pamixer"
+INCREASE_FLAG="--increase"
+DECREASE_FLAG="--decrease"
+SET_VOLUME_FLAG="--set-volume"
+SET_MUTE_FLAG="--mute"
+TOGGLE_MUTE_FLAG="--toggle-mute"
+ADDITIONAL_FLAGS=("--allow-boost")
+
+NOTIFICATION=1
+
+volume_up_by () {
+    $VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $INCREASE_FLAG $1
+}
+
+volume_down_by () {
+    $VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $DECREASE_FLAG $1
+}
+
+volume_set () {
+    $VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $SET_VOLUME_FLAG $1
+}
+
+volume_big_up () {
+    volume_up_by 10
+}
+
+volume_big_down () {
+    volume_down_by 10
+}
+
+volume_up () {
+    volume_down_by 5
+}
+
+volume_down () {
+    volume_down_by 5
+}
+
+toggle_mute() {
+    $VOLUME_CONTROLLER $TOGGLE_MUTE_FLAG
+}
+
+full_mute () {
+    $VOLUME_CONTROLLER $SET_MUTE_FLAG
+}
+
+usage() {
+    cat << EOF
+volumectl - A configurable bash script that makes your life easier in controlling you volume and notifying it.
+
+Usage:  volumectl [-n|-N] -i [arg]      increase the volume by the "normal" amount or by the [arg] amount
+        volumectl [-n|-N] -d [arg]      decrease the volume by the "normal" amount or by the [arg] amount
+        volumectl [-n|-N] -s            set volume to certain amount
+        volumectl [-n|-N] -m            set mute
+        volumectl [-n|-N] -t            toggle mute
+        volumectl -h                    to show this help message
+
+Argument:
+    -n, --notification                  forces the notification to appear (overrides the configuration setting)
+    -N, --no-notification               forces the notification NOT to appear (overrides the configuration setting)
+EOF
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
+    # Parsing through the args {{{
+
+    # check if the notification is being forced or not
+    case $1 in 
+        -n|--notification)
+            NOTIFICATION=1
+            shift
+            ;;
+        -N|--no-notification)
+            NOTIFICATION=1;
+            shift
+            ;;
+    esac
+
+    case $1 in 
+        -i|--increase) 
+            [[ -z "$2" ]] && volume_up || volume_up_by $2
+            ;;
+        -I|--big-increase) 
+            volume_big_up
+            ;;
+        -d|--decrease) 
+            [[ -z "$2" ]] && volume_down || volume_down_by $2
+            ;;
+        -D|--big-decrease) 
+            volume_big_down
+            ;;
+        -s|--set-volume)
+            volume_set $2
+            ;;
+        -m|--set-mute) 
+            full_mute
+            ;;
+        -t|--toggle-mute) 
+            toggle_mute
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            echo "Unrecognized '$1' flag or argument"
+            echo "Try 'volumectl -h' for more information"
+            ;;
+    esac
+
+
+    # End of parsing through the args }}}
+fi
