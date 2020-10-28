@@ -5,6 +5,7 @@ INCREASE_FLAG="--increase"
 DECREASE_FLAG="--decrease"
 SET_VOLUME_FLAG="--set-volume"
 SET_MUTE_FLAG="--mute"
+SET_UNMUTE_FLAG="--unmute"
 TOGGLE_MUTE_FLAG="--toggle-mute"
 ADDITIONAL_FLAGS=("--allow-boost")
 
@@ -42,6 +43,11 @@ toggle_mute() {
     $VOLUME_CONTROLLER $TOGGLE_MUTE_FLAG
 }
 
+
+full_mute () {
+    $VOLUME_CONTROLLER $SET_UNMUTE_FLAG
+}
+
 full_mute () {
     $VOLUME_CONTROLLER $SET_MUTE_FLAG
 }
@@ -54,6 +60,7 @@ Usage:  volumectl [-n|-N] -i [arg]      increase the volume by the "normal" amou
         volumectl [-n|-N] -d [arg]      decrease the volume by the "normal" amount or by the [arg] amount
         volumectl [-n|-N] -s            set volume to certain amount
         volumectl [-n|-N] -m            set mute
+        volumectl [-n|-N] -u            unmute
         volumectl [-n|-N] -t            toggle mute
         volumectl -h                    to show this help message
 
@@ -93,6 +100,9 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             ;;
         -s|--set-volume)
             volume_set $2
+            ;;
+        -u|--ummute) 
+            full_unmute
             ;;
         -m|--set-mute) 
             full_mute
