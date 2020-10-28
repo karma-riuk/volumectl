@@ -71,8 +71,6 @@ EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
-    # Parsing through the args {{{
-
     # check if the notification is being forced or not
     case $1 in 
         -n|--notification)
@@ -118,7 +116,4 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             echo "Try 'volumectl -h' for more information"
             ;;
     esac
-
-
-    # End of parsing through the args }}}
 fi
