@@ -31,7 +31,7 @@ volume_big_down () {
 }
 
 volume_up () {
-    volume_down_by 5
+    volume_up_by 5
 }
 
 volume_down () {
