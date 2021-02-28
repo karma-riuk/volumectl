@@ -12,95 +12,126 @@ GET_VOLUME_FLAG="--get-volume"
 GET_MUTE_FLAG="--get-mute"
 ADDITIONAL_FLAGS=("--allow-boost")
 
+NOTIFICATION_ID=16674
+
 ## Default values
 NOTIFICATION=1
-CONFIG_PATH="$XDG_CONFIG_HOME/`basename`/config.ini"
+CONFIG_PATH="$XDG_CONFIG_HOME/`basename $0`/config.ini"
 VERBOSE=0
 
 NORMAL_DELTA=5
-BIG_DELTA=5
+BIG_DELTA=10
+VOLUME_MAX=5
+VOLUME_MIN=100
 
 ## Args
-OPTIONAL_FLAGS=("-c" "--config" "-n" "--notifcation" "-N" "--no-notification")
+OPTIONAL_FLAGS=("-v" "--verbose" "-c" "--config" "-n" "--notifcation" "-N" "--no-notification")
+
+verbose () {
+    [[ $VERBOSE -eq 1 ]] && return 0 || return 1
+}
+
+notify () {
+    volume=$(get_volume)
+    muted=$(get_mute)
+
+    if [[ $muted = "true" ]]; then
+        icon="audio-volume-muted"
+    elif [[ $volume -eq 0 ]]; then
+        icon="audio-volume-low"
+    elif [[ $volume -gt 0 ]] && [[ $volume -lt 50 ]]; then 
+        icon="audio-volume-medium"
+    elif [[ $volume -ge 50 ]]; then 
+        icon="audio-volume-high"
+    fi
+
+    [[ $NOTIFICATION -eq 1 ]] && dunstify -h int:value:$volume -h string:x-dunst-stack-tag:volume -i "$icon" "Volume ($volume%)"
+
+}
 
 volume_up_by () {
     local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $INCREASE_FLAG $1"
-    [[ $VERBOSE -eq 1 ]] && echo "Increasing volume by $1, with \`$cmd\`"
+    verbose && echo "Increasing volume by $1, with \`$cmd\`"
 
-    [[ $VERBOSE -eq 1 ]] && echo "Volume before command: $(get_volume)"
+    verbose && echo "Volume before command: $(get_volume)"
     $cmd
-    [[ $VERBOSE -eq 1 ]] && echo "Volume after command: $(get_volume)"
-    
+    verbose && echo "Volume after command: $(get_volume)"
+    notify
 }
 
 volume_down_by () {
     local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $DECREASE_FLAG $1"
-    [[ $VERBOSE -eq 1 ]] && echo "Decreasing volume by $1, with \`$cmd\`"
+    verbose && echo "Decreasing volume by $1, with \`$cmd\`"
     
-    [[ $VERBOSE -eq 1 ]] && echo "Volume before command: $(get_volume)"
+    verbose && echo "Volume before command: $(get_volume)"
     $cmd
-    [[ $VERBOSE -eq 1 ]] && echo "Volume after command: $(get_volume)"
+    verbose && echo "Volume after command: $(get_volume)"
+    notify
 }
 
 volume_set () {
     local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $SET_VOLUME_FLAG $1"
-    [[ $VERBOSE -eq 1 ]] && echo "Setting the volume to $1, with \`$cmd\`"
+    verbose && echo "Setting the volume to $1, with \`$cmd\`"
    
-    [[ $VERBOSE -eq 1 ]] && echo "Volume before command: $(get_volume)"
+    verbose && echo "Volume before command: $(get_volume)"
     $cmd
-    [[ $VERBOSE -eq 1 ]] && echo "Volume after command: $(get_volume)"
+    verbose && echo "Volume after command: $(get_volume)"
+    notify
 }
 
 volume_big_up () {
     local cmd="volume_up_by $BIG_DELTA"
-    [[ $VERBOSE -eq 1 ]] && echo "Increasing the volume alot, with \`$cmd\`"
+    verbose && echo "Increasing the volume alot, with \`$cmd\`"
     $cmd
 }
 
 volume_big_down () {
     local cmd="volume_down_by $BIG_DELTA"
-    [[ $VERBOSE -eq 1 ]] && echo "Decreasing the volume alot, with \`$cmd\`"
+    verbose && echo "Decreasing the volume alot, with \`$cmd\`"
     $cmd
 }
 
 volume_up () {
     local cmd="volume_up_by $NORMAL_DELTA"
-    [[ $VERBOSE -eq 1 ]] && echo "Increasing the volume, with \`$cmd\`"
+    verbose && echo "Increasing the volume, with \`$cmd\`"
     $cmd
 }
 
 volume_down () {
     local cmd="volume_down_by $NORMAL_DELTA"
-    [[ $VERBOSE -eq 1 ]] && echo "Decreasing the volume, with \`$cmd\`"
+    verbose && echo "Decreasing the volume, with \`$cmd\`"
     $cmd
 }
 
 toggle_mute() {
     local cmd="$VOLUME_CONTROLLER $TOGGLE_MUTE_FLAG"
-    [[ $VERBOSE -eq 1 ]] && echo "Toggling the mute, with \`$cmd\`"
+    verbose && echo "Toggling the mute, with \`$cmd\`"
 
-    [[ $VERBOSE -eq 1 ]] && echo "Mute state before command: $(get_mute)"
+    verbose && echo "Mute state before command: $(get_mute)"
     $cmd
-    [[ $VERBOSE -eq 1 ]] && echo "Mute state after command: $(get_mute)"
+    verbose && echo "Mute state after command: $(get_mute)"
+    notify
 }
 
 
 mute () {
-    local cmd="$VOLUME_CONTROLLER $SET_UNMUTE_FLAG"
-    [[ $VERBOSE -eq 1 ]] && echo "Setting the mute on, with \`$cmd\`"
+    local cmd="$VOLUME_CONTROLLER $SET_MUTE_FLAG"
+    verbose && echo "Setting the mute on, with \`$cmd\`"
    
-    [[ $VERBOSE -eq 1 ]] && echo "Mute state before command: $(get_mute)"
+    verbose && echo "Mute state before command: $(get_mute)"
     $cmd
-    [[ $VERBOSE -eq 1 ]] && echo "Mute state after command: $(get_mute)"
+    verbose && echo "Mute state after command: $(get_mute)"
+    notify
 }
 
 unmute () {
-    local cmd="$VOLUME_CONTROLLER $SET_MUTE_FLAG"
-    [[ $VERBOSE -eq 1 ]] && echo "Setting the mute off, with \`$cmd\`"
+    local cmd="$VOLUME_CONTROLLER $SET_UNMUTE_FLAG"
+    verbose && echo "Setting the mute off, with \`$cmd\`"
     
-    [[ $VERBOSE -eq 1 ]] && echo "Mute state before command: $(get_mute)"
+    verbose && echo "Mute state before command: $(get_mute)"
     $cmd
-    [[ $VERBOSE -eq 1 ]] && echo "Mute state after command: $(get_mute)"
+    verbose && echo "Mute state after command: $(get_mute)"
+    notify
 }
 
 get_volume () {
@@ -108,7 +139,7 @@ get_volume () {
 }
 
 get_mute () {
-    $VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $GET_MUTED_FLAG
+    $VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $GET_MUTE_FLAG
 }
 
 usage() {
@@ -141,76 +172,76 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
     # check if the notification is being forced or not
     
     while [[ " ${OPTIONAL_FLAGS[@]} " =~ " $1 " ]]; do
-        [[ $VERBOSE -eq 1 ]] && echo "Checking for optional arguments"
+        verbose && echo "Checking for optional arguments"
 
         case $1 in 
             -v|--verbose)
                 VERBOSE=1
-                [[ $VERBOSE -eq 1 ]] && echo "Setting VERBOSE to true (VERBOSE=$VERBOSE)"
+                verbose && echo "Setting VERBOSE to true (VERBOSE=$VERBOSE)"
                 shift
                 ;;
             -c|--config)
                 CONFIG_PATH="$2";
-                [[ $VERBOSE -eq 1 ]] && echo "Setting CONFIG_PATH to $2 (CONFIG_PATH=$CONFIG_PATH)"
+                verbose && echo "Setting CONFIG_PATH to $2 (CONFIG_PATH=$CONFIG_PATH)"
                 shift 2
                 ;;
             -n|--notification)
                 NOTIFICATION=1
-                [[ $VERBOSE -eq 1 ]] && echo "Setting NOTIFICATION to true (NOTIFICATION=$NOTIFICATION)"
+                verbose && echo "Setting NOTIFICATION to true (NOTIFICATION=$NOTIFICATION)"
                 shift
                 ;;
             -N|--no-notification)
                 NOTIFICATION=0;
-                [[ $VERBOSE -eq 1 ]] && echo "Setting NOTIFICATION to false (NOTIFICATION=$NOTIFICATION)"
+                verbose && echo "Setting NOTIFICATION to false (NOTIFICATION=$NOTIFICATION)"
                 shift
                 ;;
         esac
     done
 
-    [[ $VERBOSE -eq 1 ]] && echo "Looking at the argument"
+    verbose && echo "Looking at the argument"
     case $1 in 
         -i|--increase) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -i or --increase, with argument '$2'"
+            verbose && echo "Detected -i or --increase, with argument '$2'"
             [[ -z "$2" ]] && volume_up || volume_up_by $2
             ;;
         -I|--big-increase) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -I or --big-increase"
+            verbose && echo "Detected -I or --big-increase"
             volume_big_up
             ;;
         -d|--decrease) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -d or --decrease, with argument '$2'"
-            [[ -z "Detected -i or --increase" ]] && volume_down || volume_down_by $2
+            verbose && echo "Detected -d or --decrease, with argument '$2'"
+            [[ -z "$2" ]] && volume_down || volume_down_by $2
             ;;
         -D|--big-decrease) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -D or --big-decrease"
+            verbose && echo "Detected -D or --big-decrease"
             volume_big_down
             ;;
         -s|--set-volume)
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -s or --set-volume, with argument '$2'"
+            verbose && echo "Detected -s or --set-volume, with argument '$2'"
             [[ -z "$2" ]] && echo "Error, missing value to set volume" 1>&2 && exit 1 || volume_set $2
             ;;
         -m|--set-mute) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -m or --mute"
+            verbose && echo "Detected -m or --mute"
             mute
             ;;
         -u|--ummute) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -u or --unmute"
+            verbose && echo "Detected -u or --unmute"
             unmute
             ;;
         -t|--toggle-mute) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -t or --toggle-mute"
+            verbose && echo "Detected -t or --toggle-mute"
             toggle_mute
             ;;
         -g|--get-volume) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -g or --get-volume"
+            verbose && echo "Detected -g or --get-volume"
             get_volume
             ;;
         -G|--get-mute) 
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -G or --get-mute"
+            verbose && echo "Detected -G or --get-mute"
             get_mute
             ;;
         -h|-\?|--help)
-            [[ $VERBOSE -eq 1 ]] && echo "Detected -h, -? or --help"
+            verbose && echo "Detected -h, -? or --help"
             usage
             ;;
         *)
