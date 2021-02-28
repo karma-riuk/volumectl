@@ -34,7 +34,7 @@ volume_up_by () {
 }
 
 volume_down_by () {
-    cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $DECREASE_FLAG $1"
+    local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $DECREASE_FLAG $1"
     [[ $VERBOSE -eq 1 ]] && echo "Decreasing volume by $1, with \`$cmd\`"
     
     [[ $VERBOSE -eq 1 ]] && echo "Volume before command: $(get_volume)"
@@ -43,7 +43,7 @@ volume_down_by () {
 }
 
 volume_set () {
-    cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $SET_VOLUME_FLAG $1"
+    local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $SET_VOLUME_FLAG $1"
     [[ $VERBOSE -eq 1 ]] && echo "Setting the volume to $1, with \`$cmd\`"
    
     [[ $VERBOSE -eq 1 ]] && echo "Volume before command: $(get_volume)"
@@ -52,31 +52,31 @@ volume_set () {
 }
 
 volume_big_up () {
-    cmd="volume_up_by $BIG_DELTA"
+    local cmd="volume_up_by $BIG_DELTA"
     [[ $VERBOSE -eq 1 ]] && echo "Increasing the volume alot, with \`$cmd\`"
     $cmd
 }
 
 volume_big_down () {
-    cmd="volume_down_by $BIG_DELTA"
+    local cmd="volume_down_by $BIG_DELTA"
     [[ $VERBOSE -eq 1 ]] && echo "Decreasing the volume alot, with \`$cmd\`"
     $cmd
 }
 
 volume_up () {
-    cmd="volume_up_by $NORMAL_DELTA"
+    local cmd="volume_up_by $NORMAL_DELTA"
     [[ $VERBOSE -eq 1 ]] && echo "Increasing the volume, with \`$cmd\`"
     $cmd
 }
 
 volume_down () {
-    cmd="volume_down_by $NORMAL_DELTA"
+    local cmd="volume_down_by $NORMAL_DELTA"
     [[ $VERBOSE -eq 1 ]] && echo "Decreasing the volume, with \`$cmd\`"
     $cmd
 }
 
 toggle_mute() {
-    cmd="$VOLUME_CONTROLLER $TOGGLE_MUTE_FLAG"
+    local cmd="$VOLUME_CONTROLLER $TOGGLE_MUTE_FLAG"
     [[ $VERBOSE -eq 1 ]] && echo "Toggling the mute, with \`$cmd\`"
 
     [[ $VERBOSE -eq 1 ]] && echo "Mute state before command: $(get_mute)"
@@ -86,7 +86,7 @@ toggle_mute() {
 
 
 mute () {
-    cmd="$VOLUME_CONTROLLER $SET_UNMUTE_FLAG"
+    local cmd="$VOLUME_CONTROLLER $SET_UNMUTE_FLAG"
     [[ $VERBOSE -eq 1 ]] && echo "Setting the mute on, with \`$cmd\`"
    
     [[ $VERBOSE -eq 1 ]] && echo "Mute state before command: $(get_mute)"
@@ -95,7 +95,7 @@ mute () {
 }
 
 unmute () {
-    cmd="$VOLUME_CONTROLLER $SET_MUTE_FLAG"
+    local cmd="$VOLUME_CONTROLLER $SET_MUTE_FLAG"
     [[ $VERBOSE -eq 1 ]] && echo "Setting the mute off, with \`$cmd\`"
     
     [[ $VERBOSE -eq 1 ]] && echo "Mute state before command: $(get_mute)"
@@ -219,3 +219,4 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             ;;
     esac
 fi
+
