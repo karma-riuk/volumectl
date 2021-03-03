@@ -12,17 +12,18 @@ GET_VOLUME_FLAG="--get-volume"
 GET_MUTE_FLAG="--get-mute"
 ADDITIONAL_FLAGS=("--allow-boost")
 
-NOTIFICATION_ID=16674
-
 ## Default values
-NOTIFICATION=1
+NOTIFICATION_ENABLED=1
+NOTIFICATION_TIMEOUT=5
 CONFIG_PATH="$XDG_CONFIG_HOME/`basename $0`/config.ini"
 VERBOSE=0
 
 NORMAL_DELTA=5
 BIG_DELTA=10
-VOLUME_MAX=5
-VOLUME_MIN=100
+VOLUME_MAX=100
+VOLUME_MIN=5
+
+
 
 ## Args
 OPTIONAL_FLAGS=("-v" "--verbose" "-c" "--config" "-n" "--notifcation" "-N" "--no-notification")
@@ -45,8 +46,9 @@ notify () {
         icon="audio-volume-high"
     fi
 
-    [[ $NOTIFICATION -eq 1 ]] && dunstify -h int:value:$volume -h string:x-dunst-stack-tag:volume -i "$icon" "Volume ($volume%)"
-
+    local cmd="dunstify -h int:value:$volume -h string:x-dunst-stack-tag:volume -i \"$icon\" \"Volume ($volume%)\""
+    [[ $NOTIFICATION_ENABLED -eq 1 ]] && sh -c "$cmd"
+    verbose && ( [[ $NOTIFICATION_ENABLED -eq 1 ]] && echo "Notified with \`$cmd\`" || echo "Didn't notify" )
 }
 
 volume_up_by () {
@@ -144,7 +146,8 @@ get_mute () {
 
 usage() {
     cat << EOF
-volumectl - A configurable bash script that makes your life easier in controlling you volume and notifying it.
+volumectl - A configurable bash script that makes your life easier in controlling volume and notifying it
+at the same time.
 
 Usage:  volumectl [-v|--verbose] [-c|--config path] [-n|-N] -option [arg]      
 
@@ -154,6 +157,8 @@ Options:
     -I, --big-increase                  increase the volume by the "big" amount
     -D, --big-decrease                  decrease the volume by the "big" amount
     -s arg, --set arg                   set volume to arg
+    --set-min-volume                    set volume to maximum
+    --set-max-volume                    set volume to maximum
     -m, --mute                          mute
     -u, --unmute                        unmute
     -t, --toggle                        toggle mute
@@ -177,28 +182,28 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
         case $1 in 
             -v|--verbose)
                 VERBOSE=1
-                verbose && echo "Setting VERBOSE to true (VERBOSE=$VERBOSE)"
+                verbose && echo "Setting \$VERBOSE to true (\$VERBOSE=$VERBOSE)"
                 shift
                 ;;
             -c|--config)
                 CONFIG_PATH="$2";
-                verbose && echo "Setting CONFIG_PATH to $2 (CONFIG_PATH=$CONFIG_PATH)"
+                verbose && echo "Setting \$CONFIG_PATH to $2 (\$CONFIG_PATH=$CONFIG_PATH)"
                 shift 2
                 ;;
             -n|--notification)
-                NOTIFICATION=1
-                verbose && echo "Setting NOTIFICATION to true (NOTIFICATION=$NOTIFICATION)"
+                NOTIFICATION_ENABLED=1
+                verbose && echo "Setting \$NOTIFICATION_ENABLED to true (\$NOTIFICATION_ENABLED=$NOTIFICATION_ENABLED)"
                 shift
                 ;;
             -N|--no-notification)
-                NOTIFICATION=0;
-                verbose && echo "Setting NOTIFICATION to false (NOTIFICATION=$NOTIFICATION)"
+                NOTIFICATION_ENABLED=0;
+                verbose && echo "Setting \$NOTIFICATION_ENABLED to false (\$NOTIFICATION_ENABLED=$NOTIFICATION_ENABLED)"
                 shift
                 ;;
         esac
     done
 
-    verbose && echo "Looking at the argument"
+    verbose && echo "Looking at the argument '$@'"
     case $1 in 
         -i|--increase) 
             verbose && echo "Detected -i or --increase, with argument '$2'"
@@ -219,6 +224,14 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
         -s|--set-volume)
             verbose && echo "Detected -s or --set-volume, with argument '$2'"
             [[ -z "$2" ]] && echo "Error, missing value to set volume" 1>&2 && exit 1 || volume_set $2
+            ;;
+        --set-min-volume)
+            verbose && echo "Detected --set-min-volume"
+            volume_set $VOLUME_MIN
+            ;;
+        --set-max-volume)
+            verbose && echo "Detected --set-min-volume"
+            volume_set $VOLUME_MAX
             ;;
         -m|--set-mute) 
             verbose && echo "Detected -m or --mute"
