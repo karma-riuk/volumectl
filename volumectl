@@ -14,7 +14,7 @@ ADDITIONAL_FLAGS=("--allow-boost")
 
 ## Default values
 NOTIFICATION_ENABLED=1
-NOTIFICATION_TIMEOUT=5000
+NOTIFICATION_TIMEOUT=3000
 
 CONFIG_PATH="$XDG_CONFIG_HOME/`basename $0`/config.ini"
 VERBOSE=0
@@ -57,7 +57,7 @@ volume_up_by () {
     verbose && echo "Increasing volume by $1, with \`$cmd\`"
 
     verbose && echo "Volume before command: $(get_volume)"
-    $cmd
+    sh -c "$cmd"
     verbose && echo "Volume after command: $(get_volume)"
     notify
 }
@@ -97,7 +97,7 @@ volume_big_down () {
 volume_up () {
     local cmd="volume_up_by $NORMAL_DELTA"
     verbose && echo "Increasing the volume, with \`$cmd\`"
-    sh -c "$cmd"
+    $cmd
 }
 
 volume_down () {
