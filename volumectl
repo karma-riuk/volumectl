@@ -27,7 +27,7 @@ VOLUME_MIN=5
 
 
 ## Args
-OPTIONAL_FLAGS=("-t" "--notification-timeout" "-v" "--verbose" "-c" "--config" "-n" "--notifcation" "-N" "--no-notification" "-h" "--help")
+OPTIONAL_FLAGS=("--notification-timeout" "-v" "--verbose" "-c" "--config" "-n" "--notifcation" "-N" "--no-notification" "-h" "--help")
 
 verbose () {
     [[ $VERBOSE -eq 1 ]] && return 0 || return 1
@@ -167,7 +167,7 @@ Options:
     -G, --get-mute                      get mute
 
 Optional arguments:
-    -t, --notification-timeout arg      forces the notification timeout, in milliseconds (overrides the configuation setting,
+    --notification-timeout arg          forces the notification timeout, in milliseconds (overrides the configuation setting,
                                         the default value is $NOTIFICATION_TIMEOUT)
     -n, --notification                  forces the notification to appear (overrides the configuration setting)
     -N, --no-notification               forces the notification NOT to appear (overrides the configuration setting)
@@ -188,7 +188,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
                 verbose && echo "Setting \$VERBOSE to true (\$VERBOSE=$VERBOSE)"
                 shift
                 ;;
-            -t|--notification-timeout)
+            --notification-timeout)
                 NOTIFICATION_TIMEOUT="$2";
                 verbose && echo "Setting \$NOTIFICATION_TIMEOUT to $2 (\$NOTIFICATION_TIMEOUT=$NOTIFICATION_TIMEOUT)"
                 shift 2
