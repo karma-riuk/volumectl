@@ -1,33 +1,49 @@
 #!/usr/bin/env bash
 
+# TODO: in the readme, remind the user that they don't have to write a fully
+# fledged config if they only want to modify a single element (like "normal
+# delta"), if the other values are not specified, the default values will be
+# used
+
 ## Default controller values
-VOLUME_CONTROLLER="pamixer"
-INCREASE_FLAG="--increase"
-DECREASE_FLAG="--decrease"
-SET_VOLUME_FLAG="--set-volume"
-SET_MUTE_FLAG="--mute"
-SET_UNMUTE_FLAG="--unmute"
-TOGGLE_MUTE_FLAG="--toggle-mute"
-GET_VOLUME_FLAG="--get-volume"
-GET_MUTE_FLAG="--get-mute"
-ADDITIONAL_FLAGS=("--allow-boost")
+DEFAULT_VOLUME_CONTROLLER="pamixer"
+DEFAULT_INCREASE_FLAG="--increase"
+DEFAULT_DECREASE_FLAG="--decrease"
+DEFAULT_SET_VOLUME_FLAG="--set-volume"
+DEFAULT_SET_MUTE_FLAG="--mute"
+DEFAULT_SET_UNMUTE_FLAG="--unmute"
+DEFAULT_TOGGLE_MUTE_FLAG="--toggle-mute"
+DEFAULT_GET_VOLUME_FLAG="--get-volume"
+DEFAULT_GET_MUTE_FLAG="--get-mute"
+DEFAULT_ADDITIONAL_FLAGS=("--allow-boost")
 
 ## Default values
-NOTIFICATION_ENABLED=1
-NOTIFICATION_TIMEOUT=3000
+DEFAULT_NOTIFICATION_ENABLED=1
+DEFAULT_NOTIFICATION_TIMEOUT=3000
 
-CONFIG_PATH="$XDG_CONFIG_HOME/volumectl/config.ini"
+DEFAULT_NORMAL_DELTA=5
+DEFAULT_BIG_DELTA=10
+DEFAULT_VOLUME_MAX=100
+DEFAULT_VOLUME_MIN=5
+
+
+
 VERBOSE=0
 
-NORMAL_DELTA=5
-BIG_DELTA=10
-VOLUME_MAX=100
-VOLUME_MIN=5
-
+CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/volumectl/config.ini"
+READ_INI_POSSIBLE_PATHS=(\
+    "${XDG_LIB_HOME:-$HOME/.local/lib}/read_ini.sh"  "${XDG_LIB_HOME:-$HOME/.local/lib}/bash_ini_parser/read_ini.sh" \
+    "./read_ini.sh" "./bash_ini_parser/read_ini.sh" \
+    "./lib/read_ini.sh" "./lib/bash_ini_parser/read_ini.sh" \
+)
 
 
 ## Args
-OPTIONAL_FLAGS=("--notification-timeout" "-v" "--verbose" "-c" "--config" "-n" "--notifcation" "-N" "--no-notification" "-h" "--help")
+OPTIONAL_FLAGS=( \
+    "-v" "--verbose" \
+    "-c" "--config" \
+    "-h" "-?" "--help" \
+)
 
 verbose () {
     [[ $VERBOSE -eq 1 ]] && return 0 || return 1
@@ -50,6 +66,67 @@ notify () {
     local cmd="dunstify -h int:value:$volume -t $NOTIFICATION_TIMEOUT -h string:x-dunst-stack-tag:volume -i \"$icon\" \"Volume ($volume%)\""
     [[ $NOTIFICATION_ENABLED -eq 1 ]] && sh -c "$cmd"
     verbose && ( [[ $NOTIFICATION_ENABLED -eq 1 ]] && echo "Notified with \`$cmd\`" || echo "Didn't notify" )
+}
+
+
+get_parser_location () {
+    local parser_location=""
+    for location in "${READ_INI_POSSIBLE_PATHS[@]}"; do
+        [[ -f "$location" ]] && parser_location="$location" && break
+    done
+
+    echo "$parser_location"
+}
+
+checkout_config () {
+    local parser_location="$(get_parser_location)"
+
+    [[ -z "$parser_location" ]] && verbose && echo "Unable to find the 'bash_ini_parser' file, which is used to read the config file. Will be using the default values of the script." && return 0
+
+
+    verbose && echo "Sourcing the ini parser"
+    source "$parser_location"
+
+    verbose && echo "Reading the config file"
+    read_ini "$CONFIG_PATH"
+
+    VOLUME_CONTROLLER=${INI__Controller__volume_controller:-$DEFAULT_VOLUME_CONTROLLER}
+    INCREASE_FLAG=${INI__Controller__increase_flag:-$DEFAULT_INCREASE_FLAG}
+    DECREASE_FLAG=${INI__Controller__decrease_flag:-$DEFAULT_DECREASE_FLAG}
+    SET_VOLUME_FLAG=${INI__Controller__set_volume_flag:-$DEFAULT_SET_VOLUME_FLAG}
+    SET_MUTE_FLAG=${INI__Controller__set_mute_flag:-$DEFAULT_SET_MUTE_FLAG}
+    SET_UNMUTE_FLAG=${INI__Controller__set_unmute_flag:-$DEFAULT_SET_UNMUTE_FLAG}
+    TOGGLE_MUTE_FLAG=${INI__Controller__toggle_mute_flag:-$DEFAULT_TOGGLE_MUTE_FLAG}
+    GET_VOLUME_FLAG=${INI__Controller__get_volume_flag:-$DEFAULT_GET_VOLUME_FLAG}
+    GET_MUTE_FLAG=${INI__Controller__get_mute_flag:-$DEFAULT_GET_MUTE_FLAG}
+    ADDITIONAL_FLAGS=${INI__Controller__additional_flags:-$DEFAULT_ADDITIONAL_FLAGS}
+
+    NORMAL_DELTA=${INI__Controller__normal_delta:-$DEFAULT_NORMAL_DELTA}
+    BIG_DELTA=${INI__Controller__big_delta:-$DEFAULT_BIG_DELTA}
+    VOLUME_MAX=${INI__Controller__volume_max:-$DEFAULT_VOLUME_MAX}
+    VOLUME_MIN=${INI__Controller__volume_min:-$DEFAULT_VOLUME_MIN}
+    
+    NOTIFICATION_ENABLED=${INI__Notification__enabled:-$DEFAULT_NOTIFICATION_ENABLED}
+    NOTIFICATION_TIMEOUT=${INI__Notification__timeout:-$DEFAULT_NOTIFICATION_TIMEOUT}
+
+
+    verbose && echo "" && echo "After parsing config file, variables are:" && \
+        echo "VOLUME_CONTROLLER: '$VOLUME_CONTROLLER'" && \
+        echo "INCREASE_FLAG: '$INCREASE_FLAG'" && \
+        echo "DECREASE_FLAG: '$DECREASE_FLAG'" && \
+        echo "SET_VOLUME_FLAG: '$SET_VOLUME_FLAG'" && \
+        echo "GET_VOLUME_FLAG: '$GET_VOLUME_FLAG'" && \
+        echo "SET_MUTE_FLAG: '$SET_MUTE_FLAG'" && \
+        echo "GET_MUTE_FLAG: '$GET_MUTE_FLAG'" && \
+        echo "ADDITIONAL_FLAGS: '${ADDITIONAL_FLAGS[@]}'" && \
+        echo "NORMAL_DELTA: '$NORMAL_DELTA'" && \
+        echo "BIG_DELTA: '$BIG_DELTA'" && \
+        echo "VOLUME_MIN: '$VOLUME_MIN'" && \
+        echo "VOLUME_MAX: '$VOLUME_MAX'" && \
+        echo "NOTIFICATION_ENABLED: '$NOTIFICATION_ENABLED'" && \
+        echo "NOTIFICATION_TIMEOUT: '$NOTIFICATION_TIMEOUT'" && \
+        echo ""
+    
 }
 
 volume_up_by () {
@@ -167,46 +244,27 @@ Options:
     -G, --get-mute                      get mute
 
 Optional arguments:
-    --notification-timeout arg          forces the notification timeout, in milliseconds (overrides the configuation setting,
-                                        the default value is $NOTIFICATION_TIMEOUT)
-    -n, --notification                  forces the notification to appear (overrides the configuration setting)
-    -N, --no-notification               forces the notification NOT to appear (overrides the configuration setting)
+    -c path, --config path              instead of reading from the default location ($CONFIG_PATH),
+                                        read from the path given
     -v, --verbose                       print each step the script passes through
     -h, -?, --help                      show this message
 EOF
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
-    # check if the notification is being forced or not
-    
+
     while [[ " ${OPTIONAL_FLAGS[@]} " =~ " $1 " ]]; do
         verbose && echo "Checking for optional arguments"
-
         case $1 in 
             -v|--verbose)
                 VERBOSE=1
-                verbose && echo "Setting \$VERBOSE to true (\$VERBOSE=$VERBOSE)"
+                echo "Setting \$VERBOSE to 1 (\$VERBOSE=$VERBOSE)"
                 shift
-                ;;
-            --notification-timeout)
-                NOTIFICATION_TIMEOUT="$2";
-                verbose && echo "Setting \$NOTIFICATION_TIMEOUT to $2 (\$NOTIFICATION_TIMEOUT=$NOTIFICATION_TIMEOUT)"
-                shift 2
                 ;;
             -c|--config)
                 CONFIG_PATH="$2";
                 verbose && echo "Setting \$CONFIG_PATH to $2 (\$CONFIG_PATH=$CONFIG_PATH)"
                 shift 2
-                ;;
-            -n|--notification)
-                NOTIFICATION_ENABLED=1
-                verbose && echo "Setting \$NOTIFICATION_ENABLED to true (\$NOTIFICATION_ENABLED=$NOTIFICATION_ENABLED)"
-                shift
-                ;;
-            -N|--no-notification)
-                NOTIFICATION_ENABLED=0;
-                verbose && echo "Setting \$NOTIFICATION_ENABLED to false (\$NOTIFICATION_ENABLED=$NOTIFICATION_ENABLED)"
-                shift
                 ;;
             -h|-\?|--help)
                 verbose && echo "Detected -h, -? or --help"
@@ -216,6 +274,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
         esac
     done
 
+    checkout_config
+    
     verbose && echo "Looking at the argument '$@'"
     case $1 in 
         -i|--increase) 
