@@ -158,7 +158,7 @@ Options:
     -I, --big-increase                  increase the volume by the "big" amount
     -D, --big-decrease                  decrease the volume by the "big" amount
     -s arg, --set arg                   set volume to arg
-    --set-min-volume                    set volume to maximum
+    --set-min-volume                    set volume to minimum
     --set-max-volume                    set volume to maximum
     -m, --mute                          mute
     -u, --unmute                        unmute
