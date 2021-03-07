@@ -81,7 +81,7 @@ get_parser_location () {
 checkout_config () {
     local parser_location="$(get_parser_location)"
 
-    [[ -z "$parser_location" ]] && verbose && echo "Unable to find the 'bash_ini_parser' file, which is used to read the config file. Will be using the default values of the script." && return 0
+    [[ -z "$parser_location" ]] && verbose && echo "Unable to find the 'read_ini.sh' file, which is used to read the config file. Will be using the default values of the script." && return 0
 
 
     verbose && echo "Sourcing the ini parser"
@@ -110,7 +110,7 @@ checkout_config () {
     NOTIFICATION_TIMEOUT=${INI__Notification__timeout:-$DEFAULT_NOTIFICATION_TIMEOUT}
 
 
-    verbose && echo "" && echo "After parsing config file, variables are:" && \
+    verbose && echo "" && echo "After parsing the config file, variables are:" && \
         echo "VOLUME_CONTROLLER: '$VOLUME_CONTROLLER'" && \
         echo "INCREASE_FLAG: '$INCREASE_FLAG'" && \
         echo "DECREASE_FLAG: '$DECREASE_FLAG'" && \
@@ -262,7 +262,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
                 shift
                 ;;
             -c|--config)
-                CONFIG_PATH="$2";
+                [[ -f "$2" ]] && CONFIG_PATH="$2" || echo "Error: the config file given '$2' doesn't exists." 1>&2 && exit 1
                 verbose && echo "Setting \$CONFIG_PATH to $2 (\$CONFIG_PATH=$CONFIG_PATH)"
                 shift 2
                 ;;
