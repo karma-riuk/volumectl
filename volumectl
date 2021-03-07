@@ -65,7 +65,7 @@ notify () {
 
     local cmd="dunstify -h int:value:$volume -t $NOTIFICATION_TIMEOUT -h string:x-dunst-stack-tag:volume -i \"$icon\" \"Volume ($volume%)\""
     [[ $NOTIFICATION_ENABLED -eq 1 ]] && sh -c "$cmd"
-    verbose && ( [[ $NOTIFICATION_ENABLED -eq 1 ]] && echo "Notified with \`$cmd\`" || echo "Didn't notify" )
+    # verbose && ( [[ $NOTIFICATION_ENABLED -eq 1 ]] && echo "Notified with \`$cmd\`" || echo "Didn't notify" )
 }
 
 
@@ -81,14 +81,18 @@ get_parser_location () {
 checkout_config () {
     local parser_location="$(get_parser_location)"
 
-    [[ -z "$parser_location" ]] && verbose && echo "Unable to find the 'read_ini.sh' file, which is used to read the config file. Will be using the default values of the script." && return 0
-
-
-    verbose && echo "Sourcing the ini parser"
-    source "$parser_location"
-
-    verbose && echo "Reading the config file"
-    read_ini "$CONFIG_PATH"
+    if [[ ! -z "$parser_location" ]]; then
+        verbose && echo "Sourcing the ini parser"
+        source "$parser_location"
+        if [[ -f "$CONFIG_PATH" ]]; then
+            verbose && echo "Reading the config file '$CONFIG_PATH'"
+            read_ini "$CONFIG_PATH"
+        else
+            verbose && echo "Unable to find the config file '$CONFIG_PATH', using default script values"
+        fi
+    else
+        verbose && echo "Unable to find the 'read_ini.sh' file, which is used to read the config file. Will be using the default vlaues of the script." 
+    fi
 
     VOLUME_CONTROLLER=${INI__Controller__volume_controller:-$DEFAULT_VOLUME_CONTROLLER}
     INCREASE_FLAG=${INI__Controller__increase_flag:-$DEFAULT_INCREASE_FLAG}
