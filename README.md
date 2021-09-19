@@ -173,7 +173,7 @@ bindsym Shift+XF86AudioLowerVolume exec --no-startup-id volumectl -D
 ## Config
 
 The config file is an optional feature, but it allows you to set a different
-volume controller than the default one ([pamixer](https://github.com/cdemoulins/pamixer))
+volume controller than the default one ([pamixer](https://github.com/cdemoulins/pamixer)).
 
 To enable the config file, first make you installed the `read_ini.sh` script
 (see above, in the dependencies) just create a `config.ini` file in the
@@ -188,7 +188,7 @@ You can see what all the available config variables are by looking at the
 [example_config.ini](./example_config.ini).
 
 The easiest way to go to setup a custom config is by running the following commands
-```console
+```bash
 mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/volumectl
 cp $HOME/.local/lib/volumectl/example_config.ini ${XDG_CONFIG_HOME:-$HOME/.config}/volumectl/config.ini
 ```
