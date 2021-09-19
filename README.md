@@ -86,20 +86,20 @@ volumectl -i
 ### Possible flags
 (You can find all the information below by doing `volumectl -h`)
 
-|Flag|Description|
-|----|-----|
-|`-i` or `--increase` | increases the volume by the "normal" amount (by default: 5%) |
-|`-i <arg>` or `--increase <arg>` |  increase the volume by the `<arg>` amount |
-|`-I` or `--big-increase` | increases the volume by the "big" amount (by default: 10%) |
-|`-d` or `--decrease` | decreases the volume by the "normal" amount (by default: 5%) |
-|`-d arg` or `--decrease arg` |  decrease the volume by the `<arg>` amount |
-|`-D` or `--big-decrease` | decreases the volume by the "big" amount (by default: 10%) |
-|`-s <arg>` or `--set <arg>` | sets the volume to `<arg>` |
-|`-m` or `--mute` | activates mute |
-|`-u` or `--unmute` | deactivates mute |
-|`-t` or `--toggle` | toggles mute |
-|`-g` or `--get-volume` | prints the current volume level |
-|`-G` or `--get-mute` | prints the current mute state |
+|Short flag | Equivalent long flag |Description|
+|-----|-----|-----|
+|`-i` | `--increase` | increases the volume by the "normal" amount (by default: 5%) |
+|`-i <arg>` | `--increase <arg>` |  increase the volume by the `<arg>` amount |
+|`-I` | `--big-increase` | increases the volume by the "big" amount (by default: 10%) |
+|`-d` | `--decrease` | decreases the volume by the "normal" amount (by default: 5%) |
+|`-d arg` | `--decrease arg` |  decrease the volume by the `<arg>` amount |
+|`-D` | `--big-decrease` | decreases the volume by the "big" amount (by default: 10%) |
+|`-s <arg>` | `--set <arg>` | sets the volume to `<arg>` |
+|`-m` | `--mute` | activates mute |
+|`-u` | `--unmute` | deactivates mute |
+|`-t` | `--toggle` | toggles mute |
+|`-g` | `--get-volume` | prints the current volume level |
+|`-G` | `--get-mute` | prints the current mute state |
 
 
 ### Optional flags
@@ -107,6 +107,6 @@ volumectl -i
 |------------|-----|
 |`-c <file>` or `--config <file>` | use `<file>` as the config file instead of the default location (`$HOME/.config/volumectl/config.ini`) |
 |`-v` or `--verbose` | print each step the script passes through |
-|`-h` or `-?` or `--help` | print the help message and exit |
+|`-h` or `--help` | print the help message and exit |
 
 
