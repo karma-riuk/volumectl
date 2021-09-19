@@ -271,7 +271,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             -h|-\?|--help)
                 verbose && echo "Detected -h, -? or --help"
                 usage
-                shift
+                exit
                 ;;
         esac
     done
