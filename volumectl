@@ -222,14 +222,14 @@ usage() {
 volumectl - A configurable bash script that makes your life easier in controlling volume and notifying it
 at the same time.
 
-Usage:  volumectl [-v|--verbose] [-c|--config path] -option [arg]      
+Usage:  volumectl [-v|--verbose] [-c|--config <file>] -option [arg]      
 
 Options:
     -i [arg], --increase [arg]          increase the volume by the "normal" amount or by the [arg] amount
     -d [arg], --decrease [arg]          decrease the volume by the "normal" amount or by the [arg] amount
     -I, --big-increase                  increase the volume by the "big" amount
     -D, --big-decrease                  decrease the volume by the "big" amount
-    -s arg, --set arg                   set volume to arg
+    -s <arg>, --set <arg>               set volume to <arg>
     -m, --mute                          mute
     -u, --unmute                        unmute
     -t, --toggle                        toggle mute
@@ -237,7 +237,7 @@ Options:
     -G, --get-mute                      get mute
 
 Optional arguments:
-    -c path, --config path              instead of reading from the default location ($CONFIG_PATH),
+    -c <file>, --config <file>          instead of reading from the default location ($CONFIG_PATH),
                                         read from the path given
     -v, --verbose                       print each step the script passes through
     -h, -?, --help                      show this message
