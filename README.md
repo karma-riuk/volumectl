@@ -17,7 +17,7 @@ have a nice looking percentage bar.
 In order to use a custom config file (which is optional, the script works
 without it but it's useful if you want to customise it), you need to install the
 [read_ini.sh](https://raw.githubusercontent.com/rudimeier/bash_ini_parser/master/read_ini.sh)
-script from the (bash_ini_parser)[https://github.com/rudimeier/bash_ini_parser]
+script from the [bash_ini_parser](https://github.com/rudimeier/bash_ini_parser)
 github repo.
 
 You can do it in two different ways downloading the script directly or cloning
