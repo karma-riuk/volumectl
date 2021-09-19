@@ -15,12 +15,19 @@ have a nice looking percentage bar.
 #### Bash Ini Reader
 
 In order to use a custom config file (which is optional, the script works
-without it but it's uselful if you want to customise it), you need to install
+without it but it's useful if you want to customise it), you need to install
 the [read_ini.sh](https://raw.githubusercontent.com/rudimeier/bash_ini_parser/master/read_ini.sh) script.
 
-You can do it in two different ways:
+You can do it in two different ways downloading the script directly or cloning
+the git repo (the script won't care which one you choose, it knows how to handle
+both situations).
 
-##### Downlading the script directly
+##### Cloning the git repo
+```bash
+git clone https://github.com/rudimeier/bash_ini_parser $HOME/.local/lib/bash_ini_parser
+```
+
+##### Downloading the script directly
 ```bash
 mkdir -p $HOME/.local/lib
 wget -O $HOME/.local/lib/read_ini.sh https://raw.githubusercontent.com/rudimeier/bash_ini_parser/master/read_ini.sh
@@ -28,6 +35,6 @@ chmod +x $HOME/.local/lib/read_ini.sh
 ```
 
 
-### Installing the script
+### Installing volumectl
 
 
