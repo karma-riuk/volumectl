@@ -62,7 +62,7 @@ sure you set it.
 
 ```bash
 git clone https://github.com/karma-riuk/volumectl $HOME/.local/lib/volumectl
-mkdir -p $HOME/.local/bin # just to make sure that the ~/.local/bin directory exists
+mkdir -p $HOME/.local/bin
 ln -s $HOME/.local/lib/volumectl $HOME/.local/bin/volumectl
 ```
 
