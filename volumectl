@@ -15,7 +15,7 @@ DEFAULT_SET_UNMUTE_FLAG="--unmute"
 DEFAULT_TOGGLE_MUTE_FLAG="--toggle-mute"
 DEFAULT_GET_VOLUME_FLAG="--get-volume"
 DEFAULT_GET_MUTE_FLAG="--get-mute"
-DEFAULT_ADDITIONAL_FLAGS=("--allow-boost")
+DEFAULT_ADDITIONAL_FLAGS=()
 
 ## Default values
 DEFAULT_NOTIFICATION_ENABLED=1
@@ -100,8 +100,8 @@ checkout_config () {
     GET_MUTE_FLAG=${INI__Controller__get_mute_flag:-$DEFAULT_GET_MUTE_FLAG}
     ADDITIONAL_FLAGS=${INI__Controller__additional_flags:-$DEFAULT_ADDITIONAL_FLAGS}
 
-    NORMAL_DELTA=${INI__Controller__normal_delta:-$DEFAULT_NORMAL_DELTA}
-    BIG_DELTA=${INI__Controller__big_delta:-$DEFAULT_BIG_DELTA}
+    NORMAL_DELTA=${INI__Amounts__normal_delta:-$DEFAULT_NORMAL_DELTA}
+    BIG_DELTA=${INI__Amounts__big_delta:-$DEFAULT_BIG_DELTA}
     
     NOTIFICATION_ENABLED=${INI__Notification__enabled:-$DEFAULT_NOTIFICATION_ENABLED}
     NOTIFICATION_TIMEOUT=${INI__Notification__timeout:-$DEFAULT_NOTIFICATION_TIMEOUT}
@@ -114,6 +114,7 @@ checkout_config () {
         echo "SET_VOLUME_FLAG: '$SET_VOLUME_FLAG'" && \
         echo "GET_VOLUME_FLAG: '$GET_VOLUME_FLAG'" && \
         echo "SET_MUTE_FLAG: '$SET_MUTE_FLAG'" && \
+        echo "SET_UNMUTE_FLAG: '$SET_UNMUTE_FLAG'" && \
         echo "GET_MUTE_FLAG: '$GET_MUTE_FLAG'" && \
         echo "ADDITIONAL_FLAGS: '${ADDITIONAL_FLAGS[@]}'" && \
         echo "NORMAL_DELTA: '$NORMAL_DELTA'" && \
@@ -255,7 +256,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
                 shift
                 ;;
             -c|--config)
-                [[ -f "$2" ]] && CONFIG_PATH="$2" || echo "Error: the config file given '$2' doesn't exists." 1>&2 && exit 1
+                [[ -f "$2" ]] && CONFIG_PATH="$2" || ( echo "Error: the config file given '$2' doesn't exists." 1>&2 && exit 1 )
                 verbose && echo "Setting \$CONFIG_PATH to $2 (\$CONFIG_PATH=$CONFIG_PATH)"
                 shift 2
                 ;;
