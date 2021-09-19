@@ -30,6 +30,8 @@ git clone https://github.com/rudimeier/bash_ini_parser $HOME/.local/lib/bash_ini
 ```
 
 ##### Downloading the script directly
+Make sure you have `wget` installed first.
+
 ```bash
 mkdir -p $HOME/.local/lib
 wget -O $HOME/.local/lib/read_ini.sh https://raw.githubusercontent.com/rudimeier/bash_ini_parser/master/read_ini.sh
