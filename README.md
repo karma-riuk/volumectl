@@ -104,8 +104,8 @@ volumectl -i
 
 ### Optional flags
 |Flag|Description|
-|----|-----|
-|`-c <file>` or `--config <file>` | use `<file>` as the config file instead of the default location (`$HOME/.config/volumectl/config.ini` |
+|------------|-----|
+|`-c <file>` or `--config <file>` | use `<file>` as the config file instead of the default location (`$HOME/.config/volumectl/config.ini`) |
 |`-v` or `--verbose` | print each step the script passes through |
 |`-h` or `-?` or `--help` | print the help message and exit |
 
