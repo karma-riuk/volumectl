@@ -110,3 +110,9 @@ volumectl -i
 |`-h` | `--help` | print the help message and exit |
 
 
+## Config
+
+The config file is an optional feature, but it allows you to set a different
+volume controller than the default one ([pamixer](https://github.com/cdemoulins/pamixer))
+
+
