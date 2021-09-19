@@ -92,7 +92,7 @@ volumectl -i
 |`-i <arg>` | `--increase <arg>` |  increase the volume by the `<arg>` amount |
 |`-I` | `--big-increase` | increases the volume by the "big" amount (by default: 10%) |
 |`-d` | `--decrease` | decreases the volume by the "normal" amount (by default: 5%) |
-|`-d arg` | `--decrease arg` |  decrease the volume by the `<arg>` amount |
+|`-d <arg>` | `--decrease <arg>` |  decrease the volume by the `<arg>` amount |
 |`-D` | `--big-decrease` | decreases the volume by the "big" amount (by default: 10%) |
 |`-s <arg>` | `--set <arg>` | sets the volume to `<arg>` |
 |`-m` | `--mute` | activates mute |
@@ -103,10 +103,10 @@ volumectl -i
 
 
 ### Optional flags
-|Flag|Description|
-|------------|-----|
-|`-c <file>` or `--config <file>` | use `<file>` as the config file instead of the default location (`$HOME/.config/volumectl/config.ini`) |
-|`-v` or `--verbose` | print each step the script passes through |
-|`-h` or `--help` | print the help message and exit |
+|Short flag | Equivalent long flag |Description|
+|-----|-----|-----|
+|`-c <file>` | `--config <file>` | use `<file>` as the config file instead of the default location (`$HOME/.config/volumectl/config.ini`) |
+|`-v` | `--verbose` | print each step the script passes through |
+|`-h` | `--help` | print the help message and exit |
 
 
