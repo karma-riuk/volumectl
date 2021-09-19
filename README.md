@@ -1,6 +1,7 @@
 # Volumectl
 A small script that bundles volume control and dunst notification. Intended to be used either on command line or for keyboard shortcuts.
 
+![demo](./volumectl_demo.gif)
 
 ## Installation
 
@@ -69,8 +70,6 @@ mkdir -p $HOME/.local/bin
 wget -O $HOME/.local/bin/volumectl https://raw.githubusercontent.com/karma-riuk/volumectl/master/volumectl
 chmod +x $HOME/.local/bin/volumectl
 ```
-
-
 
 
 
