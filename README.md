@@ -24,13 +24,14 @@ You can do it in two different ways downloading the script directly or cloning
 the git repo (the script won't care which one you choose, it knows how to handle
 both situations).
 
-##### Cloning the git repo
+##### Option 1: Cloning the git repo
 ```bash
 git clone https://github.com/rudimeier/bash_ini_parser $HOME/.local/lib/bash_ini_parser
 ```
 
-##### Downloading the script directly
-Make sure you have `wget` installed first.
+##### Option 2: Downloading the script directly
+Make sure you have `wget` installed first. It doesn't change much to do it this
+way since the repo hasn't been updated in a while.
 
 ```bash
 mkdir -p $HOME/.local/lib
@@ -40,5 +41,23 @@ chmod +x $HOME/.local/lib/read_ini.sh
 
 
 ### Installing volumectl
+To install this script, you can do it in a similar way as with the ini parser, you
+can either clone the repo or download the script directly (this option is not recommended
+because you might miss new features or bug fixes).
+
+#### Option 1 (recommended): Cloning the repo
+To make install the script, just clone this repo and then create a symlink to
+`volumectl` in whatever directory you want (as long as it is in your `$PATH`
+variable, so that the script will be executable from anywhere in the terminal,
+see this [link](https://www.tecmint.com/set-path-variable-linux-permanently/)
+for more info about the `$PATH` variable). 
+
+```bash
+git clone https://github.com/karma-riuk/volumectl $HOME/.local/lib/volumectl
+mkdir -p $HOME/.local/bin # just to make sure that the ~/.local/bin directory exists
+ln -s $HOME/.local/lib/volumectl $HOME/.local/bin/volumectl
+```
+
+
 
 
