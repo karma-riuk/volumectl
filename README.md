@@ -69,9 +69,9 @@ ln -s $HOME/.local/lib/volumectl $HOME/.local/bin/volumectl
 #### Option 2 (not recommended): Downloading the script directly
 
 ```bash
-$ mkdir -p $HOME/.local/bin
-$ wget -O $HOME/.local/bin/volumectl https://raw.githubusercontent.com/karma-riuk/volumectl/master/volumectl
-$ chmod +x $HOME/.local/bin/volumectl
+mkdir -p $HOME/.local/bin
+wget -O $HOME/.local/bin/volumectl https://raw.githubusercontent.com/karma-riuk/volumectl/master/volumectl
+chmod +x $HOME/.local/bin/volumectl
 ```
 
 
@@ -80,7 +80,7 @@ $ chmod +x $HOME/.local/bin/volumectl
 To use the script, simply execute the `volumectl` with the flag you want,
 example:
 ```bash
-$ volumectl -i
+volumectl -i
 ```
 
 ### Possible flags
@@ -95,6 +95,18 @@ $ volumectl -i
 |`-d arg` or `--decrease arg` |  decrease the volume by the `<arg>` amount |
 |`-D` or `--big-decrease` | decreases the volume by the "big" amount (by default: 10%) |
 |`-s <arg>` or `--set <arg>` | sets the volume to `<arg>` |
-|`-m` or `--mute` | sets the volume to `<arg>` |
+|`-m` or `--mute` | activates mute |
+|`-u` or `--unmute` | deactivates mute |
+|`-t` or `--toggle` | toggles mute |
+|`-g` or `--get-volume` | prints the current volume level |
+|`-G` or `--get-mute` | prints the current mute state |
+
+
+### Optional flags
+|Flag|Description|
+|----|-----|
+|`-c <file>` or `--config <file>` | use `<file>` as the config file instead of the default location (`$HOME/.config/volumectl/config.ini` |
+|`-v` or `--verbose` | print each step the script passes through |
+|`-h` or `-?` or `--help` | print the help message and exit |
 
 
