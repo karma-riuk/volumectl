@@ -1,6 +1,9 @@
 # Volumectl
 A small script that bundles volume control and dunst notification. Intended to be used either on command line or for keyboard shortcuts.
 
+Here below is a demonstration of how it works when pressing the volume and mute
+keys. The behaviour of the notification is the same if the script was executed
+from the terminal.
 ![demo](./volumectl_demo.gif)
 
 ## Installation
@@ -72,4 +75,19 @@ chmod +x $HOME/.local/bin/volumectl
 ```
 
 
+## Usage
+
+To use the script, simply execute the `volumectl` with the flag you want,
+example:
+```bash
+volumectl -i
+```
+
+### Possible flags
+(You can find all the information below by doing `volumectl -h`)
+
+|Flag|Usage|
+|----|-----|
+|`-i`<br>`-i arg`| increases the volume by the "normal" amount (5%) or by the
+`arg` amount |
 
