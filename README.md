@@ -115,4 +115,15 @@ volumectl -i
 The config file is an optional feature, but it allows you to set a different
 volume controller than the default one ([pamixer](https://github.com/cdemoulins/pamixer))
 
+To enable the config file, first make you installed the `read_ini.sh` script
+(see above, in the dependencies) just create a `config.ini` file in the
+`$HOME/.config/volumectl/` directory.
+
+If you think the default values are fine but want to modify just one value,
+then you can just place that value in the config file, `volumectl` will just
+take that changed value and keep the rest as default.
+
+You can see what a normal config file looks like by looking at the [example_config.ini](./example_config.ini).
+
+
 
