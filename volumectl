@@ -240,7 +240,7 @@ Optional arguments:
     -c <file>, --config <file>          instead of reading from the default location ($CONFIG_PATH),
                                         read from the path given
     -v, --verbose                       print each step the script passes through
-    -h, -?, --help                      show this message
+    -h, --help                          show this message
 EOF
 }
 
@@ -259,8 +259,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
                 verbose && echo "Setting \$CONFIG_PATH to $2 (\$CONFIG_PATH=$CONFIG_PATH)"
                 shift 2
                 ;;
-            -h|-\?|--help)
-                verbose && echo "Detected -h, -? or --help"
+            -h|--help)
+                verbose && echo "Detected -h or --help"
                 usage
                 exit
                 ;;
