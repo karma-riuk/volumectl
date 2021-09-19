@@ -50,13 +50,24 @@ To make install the script, just clone this repo and then create a symlink to
 `volumectl` in whatever directory you want (as long as it is in your `$PATH`
 variable, so that the script will be executable from anywhere in the terminal,
 see this [link](https://www.tecmint.com/set-path-variable-linux-permanently/)
-for more info about the `$PATH` variable). 
+for more info about the `$PATH` variable). In the commands below I'm using the
+`$HOME/.local/bin`, which by default is **not** in the `$PATH` variable, so make
+sure you set it.
 
 ```bash
 git clone https://github.com/karma-riuk/volumectl $HOME/.local/lib/volumectl
 mkdir -p $HOME/.local/bin # just to make sure that the ~/.local/bin directory exists
 ln -s $HOME/.local/lib/volumectl $HOME/.local/bin/volumectl
 ```
+
+#### Option 2 (not recommended): Downloading the script directly
+
+```bash
+mkdir -p $HOME/.local/bin
+wget -O $HOME/.local/bin/volumectl https://raw.githubusercontent.com/karma-riuk/volumectl/master/volumectl
+chmod +x $HOME/.local/bin/volumectl
+```
+
 
 
 
