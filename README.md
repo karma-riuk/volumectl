@@ -69,9 +69,9 @@ ln -s $HOME/.local/lib/volumectl $HOME/.local/bin/volumectl
 #### Option 2 (not recommended): Downloading the script directly
 
 ```bash
-mkdir -p $HOME/.local/bin
-wget -O $HOME/.local/bin/volumectl https://raw.githubusercontent.com/karma-riuk/volumectl/master/volumectl
-chmod +x $HOME/.local/bin/volumectl
+$ mkdir -p $HOME/.local/bin
+$ wget -O $HOME/.local/bin/volumectl https://raw.githubusercontent.com/karma-riuk/volumectl/master/volumectl
+$ chmod +x $HOME/.local/bin/volumectl
 ```
 
 
@@ -80,14 +80,21 @@ chmod +x $HOME/.local/bin/volumectl
 To use the script, simply execute the `volumectl` with the flag you want,
 example:
 ```bash
-volumectl -i
+$ volumectl -i
 ```
 
 ### Possible flags
 (You can find all the information below by doing `volumectl -h`)
 
-|Flag|Usage|
+|Flag|Description|
 |----|-----|
 |`-i` or `--increase` | increases the volume by the "normal" amount (by default: 5%) |
-|`-i arg` or `--increase arg` |  increase the volume by the `arg` amount |
+|`-i <arg>` or `--increase <arg>` |  increase the volume by the `<arg>` amount |
+|`-I` or `--big-increase` | increases the volume by the "big" amount (by default: 10%) |
+|`-d` or `--decrease` | decreases the volume by the "normal" amount (by default: 5%) |
+|`-d arg` or `--decrease arg` |  decrease the volume by the `<arg>` amount |
+|`-D` or `--big-decrease` | decreases the volume by the "big" amount (by default: 10%) |
+|`-s <arg>` or `--set <arg>` | sets the volume to `<arg>` |
+|`-m` or `--mute` | sets the volume to `<arg>` |
+
 

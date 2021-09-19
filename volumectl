@@ -23,9 +23,6 @@ DEFAULT_NOTIFICATION_TIMEOUT=3000
 
 DEFAULT_NORMAL_DELTA=5
 DEFAULT_BIG_DELTA=10
-DEFAULT_VOLUME_MAX=100
-DEFAULT_VOLUME_MIN=5
-
 
 
 VERBOSE=0
@@ -105,8 +102,6 @@ checkout_config () {
 
     NORMAL_DELTA=${INI__Controller__normal_delta:-$DEFAULT_NORMAL_DELTA}
     BIG_DELTA=${INI__Controller__big_delta:-$DEFAULT_BIG_DELTA}
-    VOLUME_MAX=${INI__Controller__volume_max:-$DEFAULT_VOLUME_MAX}
-    VOLUME_MIN=${INI__Controller__volume_min:-$DEFAULT_VOLUME_MIN}
     
     NOTIFICATION_ENABLED=${INI__Notification__enabled:-$DEFAULT_NOTIFICATION_ENABLED}
     NOTIFICATION_TIMEOUT=${INI__Notification__timeout:-$DEFAULT_NOTIFICATION_TIMEOUT}
@@ -123,8 +118,6 @@ checkout_config () {
         echo "ADDITIONAL_FLAGS: '${ADDITIONAL_FLAGS[@]}'" && \
         echo "NORMAL_DELTA: '$NORMAL_DELTA'" && \
         echo "BIG_DELTA: '$BIG_DELTA'" && \
-        echo "VOLUME_MIN: '$VOLUME_MIN'" && \
-        echo "VOLUME_MAX: '$VOLUME_MAX'" && \
         echo "NOTIFICATION_ENABLED: '$NOTIFICATION_ENABLED'" && \
         echo "NOTIFICATION_TIMEOUT: '$NOTIFICATION_TIMEOUT'" && \
         echo ""
@@ -237,8 +230,6 @@ Options:
     -I, --big-increase                  increase the volume by the "big" amount
     -D, --big-decrease                  decrease the volume by the "big" amount
     -s arg, --set arg                   set volume to arg
-    --set-min-volume                    set volume to minimum
-    --set-max-volume                    set volume to maximum
     -m, --mute                          mute
     -u, --unmute                        unmute
     -t, --toggle                        toggle mute
@@ -299,14 +290,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
         -s|--set-volume)
             verbose && echo "Detected -s or --set-volume, with argument '$2'"
             [[ -z "$2" ]] && echo "Error, missing value to set volume" 1>&2 && exit 1 || volume_set $2
-            ;;
-        --set-min-volume)
-            verbose && echo "Detected --set-min-volume"
-            volume_set $VOLUME_MIN
-            ;;
-        --set-max-volume)
-            verbose && echo "Detected --set-min-volume"
-            volume_set $VOLUME_MAX
             ;;
         -m|--set-mute) 
             verbose && echo "Detected -m or --mute"
