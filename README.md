@@ -30,8 +30,10 @@ git clone https://github.com/rudimeier/bash_ini_parser $HOME/.local/lib/bash_ini
 ```
 
 ##### Option 2: Downloading the script directly
-Make sure you have `wget` installed first. It doesn't change much to do it this
-way since the repo hasn't been updated in a while.
+Make sure you have `wget` installed first. 
+
+Downloading the script directly doesn't change much to do it this way since the
+repo hasn't been updated in a while.
 
 ```bash
 mkdir -p $HOME/.local/lib
