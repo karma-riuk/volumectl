@@ -33,8 +33,6 @@ VERBOSE=0
 CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/volumectl/config.ini"
 READ_INI_POSSIBLE_PATHS=(\
     "${XDG_LIB_HOME:-$HOME/.local/lib}/read_ini.sh"  "${XDG_LIB_HOME:-$HOME/.local/lib}/bash_ini_parser/read_ini.sh" \
-    "./read_ini.sh" "./bash_ini_parser/read_ini.sh" \
-    "./lib/read_ini.sh" "./lib/bash_ini_parser/read_ini.sh" \
 )
 
 
