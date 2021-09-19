@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO: in the readme, remind the user that they don't have to write a fully
-# fledged config if they only want to modify a single element (like "normal
-# delta"), if the other values are not specified, the default values will be
-# used
-
 ## Default controller values
 DEFAULT_VOLUME_CONTROLLER="pamixer"
 DEFAULT_INCREASE_FLAG="--increase"
