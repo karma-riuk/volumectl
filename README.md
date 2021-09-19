@@ -88,5 +88,6 @@ volumectl -i
 
 |Flag|Usage|
 |----|-----|
-|`-i` <br> `--increase` <br>`-i arg` <br>`--increase arg` | increases the volume by the "normal" amount (5%) or by the `arg` amount |
+|`-i` or `--increase` | increases the volume by the "normal" amount (by default: 5%) |
+|`-i arg` or `--increase arg` |  increase the volume by the `arg` amount |
 
