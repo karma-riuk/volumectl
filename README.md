@@ -14,7 +14,16 @@ from the terminal.
 Before installing and using this script, you will need to install the official 
 [dunst](https://wiki.archlinux.org/title/Dunst) package.
 Make sure you have the `dunstify` command available, that's what is needed to
-have a nice looking percentage bar.
+have a nice looking percentage bar and make you have this in your `dunstrc` to
+enable the feature
+```
+progressbar = true
+```
+
+
+If you want a similar look as in the gif above, you can just copy the [dunstrc](./dunstrc) in you 
+`$XDG_CONFIG_HOME/dunst/dunstrc` (be sure to **backup** your own `dunstrc`
+before copying mine).
 
 #### Bash Ini Reader
 
