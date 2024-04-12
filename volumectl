@@ -24,16 +24,16 @@ VERBOSE=0
 
 CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/volumectl/config.ini"
 READ_INI_POSSIBLE_PATHS=(\
-    "${XDG_LIB_HOME:-$HOME/.local/lib}/read_ini.sh"  "${XDG_LIB_HOME:-$HOME/.local/lib}/bash_ini_parser/read_ini.sh" \
-)
+        "${XDG_LIB_HOME:-$HOME/.local/lib}/read_ini.sh"  "${XDG_LIB_HOME:-$HOME/.local/lib}/bash_ini_parser/read_ini.sh" \
+    )
 
 
 ## Args
 OPTIONAL_FLAGS=( \
-    "-v" "--verbose" \
-    "-c" "--config" \
-    "-h" "-?" "--help" \
-)
+        "-v" "--verbose" \
+        "-c" "--config" \
+        "-h" "-?" "--help" \
+    )
 
 verbose () {
     [[ $VERBOSE -eq 1 ]] && return 0 || return 1
@@ -47,9 +47,9 @@ notify () {
         icon="audio-volume-muted"
     elif [[ $volume -eq 0 ]]; then
         icon="audio-volume-low"
-    elif [[ $volume -gt 0 ]] && [[ $volume -lt 50 ]]; then 
+    elif [[ $volume -gt 0 ]] && [[ $volume -lt 50 ]]; then
         icon="audio-volume-medium"
-    elif [[ $volume -ge 50 ]]; then 
+    elif [[ $volume -ge 50 ]]; then
         icon="audio-volume-high"
     fi
 
@@ -81,7 +81,7 @@ checkout_config () {
             verbose && echo "Unable to find the config file '$CONFIG_PATH', using default script values"
         fi
     else
-        verbose && echo "Unable to find the 'read_ini.sh' file, which is used to read the config file. Will be using the default vlaues of the script." 
+        verbose && echo "Unable to find the 'read_ini.sh' file, which is used to read the config file. Will be using the default vlaues of the script."
     fi
 
     VOLUME_CONTROLLER=${INI__Controller__volume_controller:-$DEFAULT_VOLUME_CONTROLLER}
@@ -97,7 +97,7 @@ checkout_config () {
 
     NORMAL_DELTA=${INI__Amounts__normal_delta:-$DEFAULT_NORMAL_DELTA}
     BIG_DELTA=${INI__Amounts__big_delta:-$DEFAULT_BIG_DELTA}
-    
+
     NOTIFICATION_ENABLED=${INI__Notification__enabled:-$DEFAULT_NOTIFICATION_ENABLED}
     NOTIFICATION_TIMEOUT=${INI__Notification__timeout:-$DEFAULT_NOTIFICATION_TIMEOUT}
 
@@ -117,7 +117,7 @@ checkout_config () {
         echo "NOTIFICATION_ENABLED: '$NOTIFICATION_ENABLED'" && \
         echo "NOTIFICATION_TIMEOUT: '$NOTIFICATION_TIMEOUT'" && \
         echo ""
-    
+
 }
 
 volume_up_by () {
@@ -133,7 +133,7 @@ volume_up_by () {
 volume_down_by () {
     local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $DECREASE_FLAG $1"
     verbose && echo "Decreasing volume by $1, with \`$cmd\`"
-    
+
     verbose && echo "Volume before command: $(get_volume)"
     sh -c "$cmd"
     verbose && echo "Volume after command: $(get_volume)"
@@ -143,7 +143,7 @@ volume_down_by () {
 volume_set () {
     local cmd="$VOLUME_CONTROLLER ${ADDITIONAL_FLAGS[@]} $SET_VOLUME_FLAG $1"
     verbose && echo "Setting the volume to $1, with \`$cmd\`"
-   
+
     verbose && echo "Volume before command: $(get_volume)"
     sh -c "$cmd"
     verbose && echo "Volume after command: $(get_volume)"
@@ -188,7 +188,7 @@ toggle_mute() {
 mute () {
     local cmd="$VOLUME_CONTROLLER $SET_MUTE_FLAG"
     verbose && echo "Setting the mute on, with \`$cmd\`"
-   
+
     verbose && echo "Mute state before command: $(get_mute)"
     sh -c "$cmd"
     verbose && echo "Mute state after command: $(get_mute)"
@@ -198,7 +198,7 @@ mute () {
 unmute () {
     local cmd="$VOLUME_CONTROLLER $SET_UNMUTE_FLAG"
     verbose && echo "Setting the mute off, with \`$cmd\`"
-    
+
     verbose && echo "Mute state before command: $(get_mute)"
     sh -c "$cmd"
     verbose && echo "Mute state after command: $(get_mute)"
@@ -218,7 +218,7 @@ usage() {
 volumectl - A configurable bash script that makes your life easier in controlling volume and notifying it
 at the same time.
 
-Usage:  volumectl [-v|--verbose] [-c|--config <file>] -option [arg]      
+Usage:  volumectl [-v|--verbose] [-c|--config <file>] -option [arg]
 
 Options:
     -i [arg], --increase [arg]          increase the volume by the "normal" amount or by the [arg] amount
@@ -244,7 +244,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
 
     while [[ " ${OPTIONAL_FLAGS[@]} " =~ " $1 " ]]; do
         verbose && echo "Checking for optional arguments"
-        case $1 in 
+        case $1 in
             -v|--verbose)
                 VERBOSE=1
                 echo "Setting \$VERBOSE to 1 (\$VERBOSE=$VERBOSE)"
@@ -264,22 +264,22 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
     done
 
     checkout_config
-    
+
     verbose && echo "Looking at the argument '$@'"
-    case $1 in 
-        -i|--increase) 
+    case $1 in
+        -i|--increase)
             verbose && echo "Detected -i or --increase, with argument '$2'"
             [[ -z "$2" ]] && volume_up || volume_up_by $2
             ;;
-        -I|--big-increase) 
+        -I|--big-increase)
             verbose && echo "Detected -I or --big-increase"
             volume_big_up
             ;;
-        -d|--decrease) 
+        -d|--decrease)
             verbose && echo "Detected -d or --decrease, with argument '$2'"
             [[ -z "$2" ]] && volume_down || volume_down_by $2
             ;;
-        -D|--big-decrease) 
+        -D|--big-decrease)
             verbose && echo "Detected -D or --big-decrease"
             volume_big_down
             ;;
@@ -287,23 +287,23 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             verbose && echo "Detected -s or --set-volume, with argument '$2'"
             [[ -z "$2" ]] && echo "Error, missing value to set volume" 1>&2 && exit 1 || volume_set $2
             ;;
-        -m|--set-mute) 
+        -m|--set-mute)
             verbose && echo "Detected -m or --mute"
             mute
             ;;
-        -u|--ummute) 
+        -u|--ummute)
             verbose && echo "Detected -u or --unmute"
             unmute
             ;;
-        -t|--toggle-mute) 
+        -t|--toggle-mute)
             verbose && echo "Detected -t or --toggle-mute"
             toggle_mute
             ;;
-        -g|--get-volume) 
+        -g|--get-volume)
             verbose && echo "Detected -g or --get-volume"
             get_volume
             ;;
-        -G|--get-mute) 
+        -G|--get-mute)
             verbose && echo "Detected -G or --get-mute"
             get_mute
             ;;
@@ -316,4 +316,3 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             ;;
     esac
 fi
-
