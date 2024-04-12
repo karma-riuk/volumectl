@@ -291,7 +291,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then #if '__name__' == '__main__'
             verbose && echo "Detected -m or --mute"
             mute
             ;;
-        -u|--ummute)
+        -u|--unmute)
             verbose && echo "Detected -u or --unmute"
             unmute
             ;;
