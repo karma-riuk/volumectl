@@ -44,18 +44,20 @@ notify () {
     muted=$(get_mute)
 
     if [[ $muted = "true" ]]; then
-        icon="audio-volume-muted"
+        icon="audio-volume-muted-symbolic"
     elif [[ $volume -eq 0 ]]; then
-        icon="audio-volume-low"
+        icon="audio-volume-low-symbolic"
     elif [[ $volume -gt 0 ]] && [[ $volume -lt 50 ]]; then
-        icon="audio-volume-medium"
+        icon="audio-volume-medium-symbolic"
     elif [[ $volume -ge 50 ]]; then
-        icon="audio-volume-high"
+        icon="audio-volume-high-symbolic"
+    elif [[ $volume -gt 100 ]]; then
+        icon="audio-volume-overamplified-symbolic"
     fi
 
     local cmd="dunstify -h int:value:$volume -t $NOTIFICATION_TIMEOUT -h string:x-dunst-stack-tag:volume -i \"$icon\" \"Volume ($volume%)\""
     [[ $NOTIFICATION_ENABLED -eq 1 ]] && sh -c "$cmd"
-    # verbose && ( [[ $NOTIFICATION_ENABLED -eq 1 ]] && echo "Notified with \`$cmd\`" || echo "Didn't notify" )
+    verbose && ( [[ $NOTIFICATION_ENABLED -eq 1 ]] && echo "Notified with \`$cmd\`" || echo "Didn't notify" )
 }
 
 
